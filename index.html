@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocBot AI — Triagem Médica Virtual</title>
+    <style>
+        :root {
+            --primary: #0284c7;
+            --primary-hover: #0369a1;
+            --bg-body: #f0f9ff;
+            --chat-bg: #ffffff;
+            --text-dark: #0f172a;
+            --bot-bubble: #e0f2fe;
+            --user-bubble: #0284c7;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .chat-card {
+            background: var(--chat-bg);
+            width: 100%;
+            max-width: 480px;
+            height: 620px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+
+        .chat-header {
+            background: var(--primary);
+            color: white;
+            padding: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .chat-header .avatar {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .chat-header .info h2 {
+            font-size: 1.05rem;
+            font-weight: 600;
+        }
+
+        .chat-header .info p {
+            font-size: 0.8rem;
+            opacity: 0.85;
+        }
+
+        .chat-body {
+            flex: 1;
+            padding: 1.2rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            background: #fafafa;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+            font-size: 0.92rem;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+
+        .message.bot {
+            background: var(--bot-bubble);
+            color: #0369a1;
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+
+        .message.user {
+            background: var(--user-bubble);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .chat-footer {
+            padding: 1rem;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chat-footer input {
+            flex: 1;
+            padding: 0.7rem 1rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        .chat-footer input:focus {
+            border-color: var(--primary);
+        }
+
+        .chat-footer button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .chat-footer button:hover {
+            background: var(--primary-hover);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chat-card">
+        <div class="chat-header">
+            <div class="avatar">🩺</div>
+            <div class="info">
+                <h2>DocBot AI</h2>
+                <p>Triagem Médica Virtual</p>
+            </div>
+        </div>
+
+        <div class="chat-body" id="chatContainer">
+            <div class="message bot">
+                Olá! Sou o DocBot AI. Descreva seus sintomas ou informe a modalidade do atendimento para iniciarmos a triagem.
+            </div>
+        </div>
+
+        <div class="chat-footer">
+            <input type="text" id="userInput" placeholder="Digite aqui..." onkeypress="tratarEnter(event)">
+            <button onclick="enviarMensagem()">Enviar</button>
+        </div>
+    </div>
+
+    <script>
+        // Processamento da triagem de sintomas
+        function processarTriagemIA(sintoma) {
+            let sintomaNormalizado = sintoma.toLowerCase();
+            let respostaBot = "";
+
+            // Regra inicial de triagem
+            respostaBot = "[TRIAGEM PADRÃO] Encaminhado para consulta geral. Valor: R$ 150,00";
+
+            return respostaBot;
+        }
+
+        // Interface do chat
+        function enviarMensagem() {
+            const input = document.getElementById("userInput");
+            const texto = input.value.trim();
+
+            if (!texto) return;
+
+            adicionarBolha(texto, "user");
+            input.value = "";
+
+            setTimeout(() => {
+                const resposta = processarTriagemIA(texto);
+                adicionarBolha(resposta, "bot");
+            }, 400);
+        }
+
+        function adicionarBolha(texto, tipo) {
+            const container = document.getElementById("chatContainer");
+            const bolha = document.createElement("div");
+            bolha.className = `message ${tipo}`;
+            bolha.textContent = texto;
+            container.appendChild(bolha);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function tratarEnter(event) {
+            if (event.key === "Enter") {
+                enviarMensagem();
+            }
+        }
+    </script>
+</body>
+</html>
