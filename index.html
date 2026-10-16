@@ -173,9 +173,11 @@
             let sintomaNormalizado = sintoma.toLowerCase();
             let respostaBot = "";
 
-            // Regra inicial de triagem
-            respostaBot = "[TRIAGEM PADRÃO] Encaminhado para consulta geral. Valor: R$ 150,00";
-
+            if (sintomaNormalizado.includes("plano") || sintomaNormalizado.includes("convenio") || sintomaNormalizado.includes("unimed")) {
+                respostaBot = "[CONVÊNIO ACEITO] Encaminhado para rede credenciada. Copagamento: R$ 35,00";
+            } else {
+                respostaBot = "[TRIAGEM PADRÃO] Encaminhado para consulta geral. Valor: R$ 150,00";
+            }
             return respostaBot;
         }
 
